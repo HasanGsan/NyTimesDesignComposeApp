@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <style name="Theme.NyTimes" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowDisablePreview">true</item>
+    </style>
+<!-- Танцы с бубном))) Сделал прозрачную заставку чтобы было анимированное лого -->
+
+
+    <style name="Theme.NyTimes.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@android:color/black</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_splash_transparent</item>
+        <item name="postSplashScreenTheme">@style/Theme.NyTimes</item>
+    </style>
+
+</resources>
