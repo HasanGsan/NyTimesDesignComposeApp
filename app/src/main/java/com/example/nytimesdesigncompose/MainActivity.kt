@@ -53,29 +53,16 @@ class MainActivity : ComponentActivity() {
 fun LoginScreen(){
 
     val viewModel = viewModel<AuthViewModel>()
-
-//    var login by remember { mutableStateOf("") }
-//    var password by remember { mutableStateOf("") }
-//    var passwordVisible by remember { mutableStateOf(false) }
-
-    //Состояния которые читает юайка
-    val login by viewModel.login.collectAsState()
-    val password by viewModel.password.collectAsState()
-    val passwordVisible by viewModel.passwordVisible.collectAsState()
-    val loginError by viewModel.loginError.collectAsState()
-    val passwordError by viewModel.passwordError.collectAsState()
-    val isFormValid by viewModel.isFormValid.collectAsState()
-    val authSuccess by viewModel.authSuccess.collectAsState()
-    val authLoginError by viewModel.authLoginError.collectAsState()
-    val authPasswordError by viewModel.authPasswordError.collectAsState()
-
+    val uiState by viewModel.uiState.collectAsState()
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxSize()
             .background(BlackBackground)
-            .padding(start = 20.dp, end = 20.dp)
+            .padding(start = 20.dp, end = 20.dp),
+
+
     ) {
 
         Spacer(Modifier.height(32.dp))
@@ -84,49 +71,41 @@ fun LoginScreen(){
 
         Spacer(Modifier.height(32.dp))
 
-        LoginInput(
-            login = login,
-            onLoginChange = { viewModel.updateLogin(it)},
-            isError = loginError.isNotEmpty(),
-            errorMessage = loginError,
-            authMessage = authSuccess,
-            errorAuthMessage = authLoginError
-        )
+        Column(
+            verticalArrangement = Arrangement.spacedBy((-12).dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            LoginInput(
+                login = uiState.login,
+                onLoginChange = { viewModel.updateLogin(it)},
+                isError = uiState.loginError.isNotEmpty(),
+                errorMessage = uiState.loginError,
+                authMessage = uiState.authSuccess,
+                errorAuthMessage = uiState.authLoginError
+            )
 
-        PasswordInput(
-            password = password,
-            passwordVisible = passwordVisible,
-            onPasswordChange = { viewModel.updatePassword(it) },
-            onVisibilityChange = { viewModel.togglePasswordVisibility() },
-            isError = passwordError.isNotEmpty(),
-            errorMessage = passwordError,
-            authMessage = authSuccess,
-            errorAuthMessage = authPasswordError
-        )
+            PasswordInput(
+                password = uiState.password,
+                passwordVisible = uiState.passwordVisible,
+                onPasswordChange = { viewModel.updatePassword(it) },
+                onVisibilityChange = { viewModel.togglePasswordVisibility() },
+                isError = uiState.passwordError.isNotEmpty(),
+                errorMessage = uiState.passwordError,
+                authMessage = uiState.authSuccess,
+                errorAuthMessage = uiState.authPasswordError
+            )
+        }
 
-        Spacer(Modifier.height(24.dp))
+        Spacer(Modifier.height(14.dp))
 
         Row (
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.End,
         ) {
-            LoginButton( isEnabled = isFormValid,
-                onClick = {
-                println("=== ДЕБАГ КНОПКИ ===")
-                println("isFormValid = $isFormValid")
-                println("login = '$login'")
-                println("password = '$password'")
-                println("loginError = '$loginError'")
-                println("passwordError = '$passwordError'")
-                println("===================")
-
-                viewModel.trueAuth()
-            }
-
+            LoginButton( isEnabled = uiState.isFormValid,
+                onClick = { viewModel.trueAuth() }
             )
         }
-
-
     }
 
 }

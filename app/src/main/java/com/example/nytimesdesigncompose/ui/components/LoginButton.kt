@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun LoginButton(
     isEnabled: Boolean = false,
+    modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
 ) {
     var isPressed by remember { mutableStateOf(false) }
@@ -30,35 +31,21 @@ fun LoginButton(
             isPressed = false
         },
         enabled = isEnabled,
-        modifier = Modifier
+        modifier = modifier
             .height(48.dp)
-            .width(112.dp)
+            .width(102.dp)
             .pointerInteropFilter {
-            if (it.action == MotionEvent.ACTION_DOWN && isEnabled) {
-                isPressed = true
-            }
-            if (it.action == MotionEvent.ACTION_UP || it.action == MotionEvent.ACTION_CANCEL) {
-                isPressed = false
-            }
+            if (it.action == MotionEvent.ACTION_DOWN && isEnabled) isPressed = true
+            if (it.action == MotionEvent.ACTION_UP || it.action == MotionEvent.ACTION_CANCEL) isPressed = false
             false
         },
-        shape = RoundedCornerShape(2.dp),
+        shape = RoundedCornerShape(6.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = if (isEnabled){
-                if(isPressed){
-                    Color.LightGray
-                }
-                else{
-                    Color.White
-                }
-
-            } else {
-                Color.Gray
-            },
+            containerColor = if (isEnabled){ if(isPressed) Color.LightGray else Color.White } else { Color.Gray },
             disabledContainerColor = Color.Gray,
         )
     ) {
-        Text("ВОЙТИ", fontSize = 18.sp, color = Color.DarkGray)
+        Text("ВОЙТИ", fontSize = 16.sp, color = Color.DarkGray)
     }
 
 }

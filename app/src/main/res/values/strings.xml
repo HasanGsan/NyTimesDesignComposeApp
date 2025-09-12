@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">NyTimesDesignCompose</string>
+    <string name="passwordInputLabel">Пароль</string>
+    <string name="loginInputLabel">Пароль</string>
+
+    <string name="wrongPasswordText">Неверный пароль</string>
+    <string name="wrongLoginText">Неверный логин</string>
+
+    <string name="descriptionInvisiblePassword">Скрыть пароль</string>
+    <string name="descriptionVisiblePassword">Показать пароль</string>
 </resources>

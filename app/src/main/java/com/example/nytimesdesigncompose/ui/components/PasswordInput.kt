@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -31,6 +32,7 @@ fun PasswordInput(
     onPasswordChange: (String) -> Unit,
     onVisibilityChange: () -> Unit,
     isError: Boolean = false,
+    modifier: Modifier = Modifier,
     errorMessage: String = "",
     authMessage: String = "",
     errorAuthMessage: String = ""
@@ -39,8 +41,10 @@ fun PasswordInput(
         OutlinedTextField(
             value = password,
             onValueChange = onPasswordChange,
-            label = { Text("Пароль") },
-            modifier = Modifier.fillMaxWidth(),
+            label = {Text(stringResource(id = R.string.passwordInputLabel))},
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(vertical = 4.dp),
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
             colors = OutlinedTextFieldDefaults.colors(
@@ -52,27 +56,13 @@ fun PasswordInput(
                 focusedBorderColor = Color.Transparent,
                 unfocusedBorderColor = Color.Transparent,
             ),
-            visualTransformation = if (passwordVisible) {
-                VisualTransformation.None
-            } else {
-                PasswordVisualTransformation()
-            },
+            visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
             trailingIcon = {
                 if (password.isNotEmpty()) {
                     IconButton(onClick = onVisibilityChange) {
                         Icon(
-                            painter = painterResource(
-                                id = if (passwordVisible) {
-                                    R.drawable.trailing_open_icon
-                                } else {
-                                    R.drawable.trailing_close_icon
-                                }
-                            ),
-                            contentDescription = if (passwordVisible) {
-                                "Скрыть пароль"
-                            } else {
-                                "Показать пароль"
-                            },
+                            painter = painterResource( id = if (passwordVisible) R.drawable.trailing_open_icon else R.drawable.trailing_close_icon ),
+                            contentDescription = if (passwordVisible) stringResource(id = R.string.descriptionInvisiblePassword) else stringResource(id = R.string.descriptionVisiblePassword),
                             modifier = Modifier
                                 .size(48.dp),
                             tint = Color.White
@@ -82,53 +72,30 @@ fun PasswordInput(
             }
         )
         Divider(
-            color = if (isError) {
-                Color.DarkGray
-            } else {
-                Color.White
-            },
-            thickness = 1.dp
+            color = if (isError) Color.Red else Color.DarkGray,
+            thickness = 1.dp,
         )
-
-//        if(authMessage.isNotEmpty()){
-//            Text(
-//                text = authMessage,
-//                color = Color.White,
-//                fontSize = 12.sp,
-//                modifier = Modifier.padding(top = 4.dp)
-//            )
-//        }
-//        else
-//        if(isError && errorMessage.isNotEmpty()){
-//            Text(
-//                text = errorMessage,
-//                color = Color.Red,
-//                fontSize = 12.sp,
-//                modifier = Modifier.padding(top = 4.dp)
-//            )
-//        }
-//    }
 
         if (isError && errorMessage.isNotEmpty()) {
             Text(
                 text = errorMessage,
                 color = Color.Red,
                 fontSize = 12.sp,
-                modifier = Modifier.padding(top = 4.dp)
+                modifier = modifier.padding(start = 16.dp)
             )
         } else if (authMessage.isNotEmpty() && errorAuthMessage.isEmpty()) {
             Text(
                 text = authMessage,
                 color = Color.White,
                 fontSize = 12.sp,
-                modifier = Modifier.padding(top = 4.dp)
+                modifier = modifier.padding(start = 16.dp)
             )
         } else {
             Text(
                 text = errorAuthMessage,
                 color = Color.Red,
                 fontSize = 12.sp,
-                modifier = Modifier.padding(top = 4.dp)
+                modifier = modifier.padding(start = 16.dp)
             )
         }
     }
